@@ -1,0 +1,9 @@
+<div class="grid grid-cols-3 gap-4 justify-evenly">
+    @for(card of cards; track card.title){
+     
+            <app-card class="items-center" [title]="card.title" [number]="card.number" [img]="card.img"></app-card>
+
+        
+
+    }
+</div>

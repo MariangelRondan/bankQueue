@@ -1,0 +1,75 @@
+<div class="px-4 sm:px-6 lg:px-8">
+  @if(!open){
+    
+    <div class="sm:flex sm:items-center">
+        <div class="sm:flex-auto">
+            <h1 class="text-2xl font-semibold leading-6 text-indigo-700">Bank wait list</h1>
+            <p class="mt-2 text-sm text-gray-700">The list of hanging on users for bank service</p>
+  
+            
+            </div>
+            <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+                <button (click)="toggleForm()" type="button" class="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Add client</button>
+                </div>
+                </div>
+                
+        <div class="mt-8 flow-root">
+          <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+              <table class="min-w-full divide-y divide-gray-300">
+                <thead>
+                  <tr>
+                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">ID</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Name</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Service</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Waiting Time</th>
+                    <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
+                      <span class="sr-only">Delete</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                  @for(customer of (waitingCustomers$ | async); track customer.id){
+
+                    <tr>
+                      <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">{{customer.id}}</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{customer.name}}</td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{customer.service}}</td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ calculateWaitingTime(customer.id) }} </td>
+
+                  <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
+                <a (click)="removeCustomer(customer.id)" class="text-indigo-600 hover:text-indigo-900 cursor-pointer">Delete<span class="sr-only">{{customer.name}}</span></a>
+              </td>
+            </tr>
+          }
+      
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+    }
+
+    
+  </div>
+  
+  @if(open){
+      <div class="bg-slate-200 rounded-md h-64  justify-center mt-[10%] mx-auto w-64 ">
+          <form class="flex flex-col p-5 space-y-6" #customerForm="ngForm" (ngSubmit)="addCustomer(customerForm)">
+             <div>
+              <label class="block mb-3" for="name">Customer's name:</label>
+              <input  type="text" name="name" ngModel   #name="ngModel" class="w-full rounded-sm">
+              </div>
+              <div>
+                  <label class="block mb-3" for="service">Service:</label>
+                  <input type="text" name="service" ngModel   #service="ngModel" class="w-full rounded-sm">
+                  </div>
+                  <div class="grid grid-cols-2 space-x-3">
+
+                    <button type="submit" [disabled]="customerForm.invalid"   class="w-24 block rounded-md bg-slate-400 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-slate-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
+                    <button (click)="toggleForm()" type="button" class="w-24 block rounded-md bg-slate-400 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-slate-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Close</button>
+                  </div>
+  
+          </form>
+      </div>
+  }
